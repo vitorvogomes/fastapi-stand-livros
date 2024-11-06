@@ -24,7 +24,7 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 - Utilize a documentação automática gerada pelo FastAPI com OpenAPI/Swagger para documentar os endpoints da API.
 - Certifique-se de que a documentação inclua descrições detalhadas dos endpoints, parâmetros, e modelos de resposta.
 
-### Critérios de Avaliação
+## Critérios de Avaliação
 - Funcionalidade: A API deve funcionar corretamente e realizar as operações de CRUD conforme esperado.
 - Organização e Qualidade do Código: Serão avaliadas a clareza e a organização do código, o uso de boas práticas de desenvolvimento, e a separação adequada de responsabilidades.
 - Testes: A cobertura de testes será um ponto importante na avaliação, assim como a qualidade e abrangência dos mesmos.
