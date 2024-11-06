@@ -20,7 +20,7 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 - Implemente autenticação de usuários utilizando JWT (JSON Web Tokens).
 - Implemente a autorização com uso de Dependências (dependencies) ou Middleware para restringir o acesso a determinados endpoints.
 
-### Documentação da API com OpenAPI/Swagger
+## Documentação da API com OpenAPI/Swagger
 - Utilize a documentação automática gerada pelo FastAPI com OpenAPI/Swagger para documentar os endpoints da API.
 - Certifique-se de que a documentação inclua descrições detalhadas dos endpoints, parâmetros, e modelos de resposta.
 
