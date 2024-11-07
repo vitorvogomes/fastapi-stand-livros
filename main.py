@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status, HTTPException
+from books import books
 
 # Define parâmetros para documentação Swagger UI
 app = FastAPI (
@@ -15,6 +16,15 @@ app = FastAPI (
 @app.get("/")
 async def root():
     return {"message": "Welcome to my FastApi Project"}
+
+@app.get("/books",  
+            status_code=status.HTTP_200_OK,
+            description="Retorna os livros disponíveis no Stand.",
+            summary="Retorna livros",
+            response_description="Livros encontrados com sucesso.")
+async def get_books():
+    return {"Livros Disponíveis": books}
+
 
 if __name__ == '__main__':
     import uvicorn
