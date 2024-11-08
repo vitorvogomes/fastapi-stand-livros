@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, String, Float
 from config import Base
 
 # Modelo SQLAlchemy que representa a tabela `RackData` no banco de dados PostgreSQL
@@ -6,7 +6,7 @@ class Book_Model(Base):
     __tablename__ = 'RackData'
 
     # Definição das colunas da tabela
-    book_id = Column(Integer, primary_key=True, index=True)
+    book_id = Column(String, primary_key=True, index=True)
     book_title = Column(String, index=True)
     book_author = Column(String, index=True)
     book_category = Column(String, index=True)

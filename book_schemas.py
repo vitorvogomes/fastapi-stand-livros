@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 class BookModel(BaseModel):
-    id: Optional[int] = None
+    id: Optional[str] = None #UUID gerado automaticamente
     nome: str
     autor: str
     valor: float
@@ -11,9 +11,9 @@ class BookModel(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "nome": "Nome do Livro",
+                "titulo": "Nome do Livro",
                 "autor": "Autor do Livro",
+                "categoria": "Categoria do Livro",
                 "valor": 99.99,
-                "categoria": "Categoria do Livro"
             }
         }
