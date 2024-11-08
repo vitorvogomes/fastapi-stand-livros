@@ -1,7 +1,7 @@
 books = [
     {
         "id": 1,
-        "nome": "Os Segredos da Mente Milionária",
+        "titulo": "Os Segredos da Mente Milionária",
         "autor": "T. Harv Eker",
         "valor": 29.90,
         "categoria": "Finanças"

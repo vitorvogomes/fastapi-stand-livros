@@ -1,7 +1,7 @@
-from fastapi import FastAPI, status, HTTPException
-from books import books
+from fastapi import FastAPI
+from book_routers import book_router
 
-# Define parâmetros para documentação Swagger UI
+# Criação da aplicação FastAPI com parâmetros de documentação da API Swagger
 app = FastAPI (
     title="Stand de Livros",
     version="1.0",
@@ -13,19 +13,12 @@ app = FastAPI (
     },
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Welcome to my FastApi Project"}
+# Roteadores definidos no módulo `book_routers`
+app.include_router(book_router)
 
-@app.get("/books",  
-            status_code=status.HTTP_200_OK,
-            description="Retorna os livros disponíveis no Stand.",
-            summary="Retorna livros",
-            response_description="Livros encontrados com sucesso.")
-async def get_books():
-    return {"Livros Disponíveis": books}
-
-
+# Iniciar servidor FastAPI usando Uvicorn
 if __name__ == '__main__':
     import uvicorn
+
+    # Configuração do servidor para rodar localmente
     uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=True)

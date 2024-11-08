@@ -1,4 +1,9 @@
 .venv
+.env
+books.py
+alembic
+alembic.ini
+
 .vscode
 __pycache__
 *.pyc
