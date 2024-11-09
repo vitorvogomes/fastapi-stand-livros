@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from book_routers import book_router
+from routers.book_routers import book_router
 
 # Criação da aplicação FastAPI com parâmetros de documentação da API Swagger
 app = FastAPI (

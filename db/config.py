@@ -21,6 +21,7 @@ Base = declarative_base()
 # Criar as tabelas no banco de dados se ainda não existirem
 Base.metadata.create_all(bind=engine)
 
+
 # Função para obter uma sessão do banco de dados
 def get_db():
     db = SessionLocal()

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from book_models import Book_Model
+from db.book_models import Book_Model
 
 import uuid
 
@@ -53,11 +53,6 @@ class BookBaseService:
             new_books.append(book)
         db.commit()
         return [data.json() for data in new_books]
-    
-    # Erro genérico para falhas de banco de dados
-    def __handle_db_value_error(self, error):
-        raise ValueError(f"(service) Erro no banco de dados: {error}")
-
 
 # Serviço responsável por listar todos os livros
 class Book_List(BookBaseService):
@@ -71,7 +66,7 @@ class Book_List(BookBaseService):
                 return [data.json() for data in books]
             return None
         except Exception as error:
-            self.__handle_db_value_error(error)
+            raise ValueError(f"(service) Erro no banco de dados: {error}")
 
 
 # Serviço responsável por criar novos livros
@@ -83,7 +78,7 @@ class Book_Create(BookBaseService):
         try:
             return self._create_books(db, books)
         except Exception as error:
-            self.__handle_db_value_error(error)
+            raise ValueError(f"(service) Erro no banco de dados: {error}")
 
 
 # Serviço responsável por buscar um livro específico pelo ID        
@@ -98,7 +93,7 @@ class Book_By_Id(BookBaseService):
                 return book.json()
             return None
         except Exception as error:
-            self.__handle_db_value_error(error)
+            raise ValueError(f"(service) Erro no banco de dados: {error}")
 
 
 # Serviço responsável por deletar um livro específico pelo ID
@@ -110,7 +105,7 @@ class Book_Delete(BookBaseService):
         try:
             return self._delete_book_by_id(db, book_id)
         except Exception as error:
-            self.__handle_db_value_error(error)
+            raise ValueError(f"(service) Erro no banco de dados: {error}")
 
     
 

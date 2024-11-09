@@ -3,7 +3,7 @@ from typing import Optional
 
 class BookModel(BaseModel):
     id: Optional[str] = None #UUID gerado automaticamente
-    nome: str
+    titulo: str
     autor: str
     valor: float
     categoria: str

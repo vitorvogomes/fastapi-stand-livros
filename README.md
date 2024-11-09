@@ -34,15 +34,9 @@ requirements.txt
 fastapi
 uvicorn
 sqlalchemy
-alembic
 python-dotenv
 
-alembic init alembic
-alembic revision --autogenerate -m "Initial migration"
-alembic upgrade head
-
-password Postgres@777
-
+docker-compose up --build
 
 ## Critérios de Avaliação
 - Funcionalidade: A API deve funcionar corretamente e realizar as operações de CRUD conforme esperado.

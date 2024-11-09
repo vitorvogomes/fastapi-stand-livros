@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
-from book_service import Book_List, Book_By_Id, Book_Delete, Book_Create
-from book_schemas import BookModel
+from services.book_service import Book_List, Book_By_Id, Book_Delete, Book_Create
+from db.book_schemas import BookModel
 from typing import List
-from config import get_db
+from db.config import get_db
 
 # Instância dos serviços responsáveis por gerenciar os livros
 book_list_service = Book_List()
@@ -31,13 +31,8 @@ async def get_books(db: Session = Depends(get_db)):
     try:
         book_list = book_list_service.get(db)
         if not book_list:
-            # Retorna um erro 404 caso não haja livros na base de dados
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Nenhum livro foi localizado no Rack"
-            )
-        else:
-            return book_list
+            return {"warning": "Nenhum livro cadastrado no banco de dados"}
+        return book_list
     except Exception as error:
         # Captura erros gerais e retorna uma resposta 500 (erro interno)
         raise HTTPException (
@@ -74,15 +69,11 @@ async def create_book(books: List[BookModel], db: Session = Depends(get_db)):
             summary="Busca um livro pelo ID",
             response_description="O livro foi encontrado")
 
-async def get_book_by_id(book_id: int, db: Session = Depends(get_db)):
+async def get_book_by_id(book_id: str, db: Session = Depends(get_db)):
     try:
         book = book_by_id_service.get(db, book_id)
         if not book:
-            # Retorna um erro 404 caso o livro não seja encontrado
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Nenhum livro foi localizado no Rack"
-            )
+            return {"warning": f"O livro com o id: {book_id} não foi localizado."}
         return book
     except Exception as error:
         # Captura erros gerais e retorna uma resposta 500 (erro interno)
@@ -97,15 +88,12 @@ async def get_book_by_id(book_id: int, db: Session = Depends(get_db)):
                     description="Deleta um livro que foi adicionado no banco de dados através do seu ID",
                     summary="Deleta um livro pelo ID",
                     response_description="Livro deletado com sucesso.")
-async def delete_book_by_id(book_id: int, db: Session = Depends(get_db)):
+async def delete_book_by_id(book_id: str, db: Session = Depends(get_db)):
     try:
         book = book_by_id_service.get(db, book_id)
         if not book:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"O livro com o id: {book_id} não foi localizado."
-            )
-        book_delete_service.delete(db, book_id)  
+            return {"warning": f"O livro com o id: {book_id} não foi localizado."}
+        book_delete_service.delete(db, book_id)
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
