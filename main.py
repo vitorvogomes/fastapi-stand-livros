@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from routers.book_routers import book_router
+from db.book_models import Book_Model
+from db.config import engine, Base
 
 # Criação da aplicação FastAPI com parâmetros de documentação da API Swagger
 app = FastAPI (
@@ -15,6 +17,9 @@ app = FastAPI (
 
 # Roteadores definidos no módulo `book_routers`
 app.include_router(book_router)
+
+# Criar as tabelas no banco de dados se ainda não existirem
+Base.metadata.create_all(bind=engine)
 
 # Iniciar servidor FastAPI usando Uvicorn
 if __name__ == '__main__':

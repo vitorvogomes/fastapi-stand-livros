@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from db.book_models import Book_Model
-
+from typing import List, Dict
 import uuid
 
 # Classe base genérica para operações CRUD
@@ -33,13 +33,13 @@ class BookBaseService:
             ).first()
     
     # Cria um ou mais livros no banco de dados
-    def _create_books(self, db: Session, books: list[dict]):
+    def _create_books(self, db: Session, books: List[Dict]):
         new_books = []
         for data in books:
             # Verifica se o livro já existe no banco de dados
             check = self._check_if_book_exists(db, data["titulo"], data["categoria"])
             if check:
-                raise ValueError(f"(service) O livro {data["titulo"]} já existe no banco de dados.")
+                raise ValueError(f"(service) O livro {data['titulo']} já existe no banco de dados.")
             
             # Se o livro não existir, adiciona no banco de dados
             book = self.model(
@@ -74,7 +74,7 @@ class Book_Create(BookBaseService):
     def __init__(self):
         super().__init__(Book_Model)
 
-    def post(self, db: Session, books: list[dict]):
+    def post(self, db: Session, books: List[Dict]):
         try:
             return self._create_books(db, books)
         except Exception as error:

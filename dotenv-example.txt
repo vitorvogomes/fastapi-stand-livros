@@ -1,1 +1,4 @@
-DATABASE_URL=postgresql://<usuario>:<senha>@localhost:<port>/<NomeDataBase>
+POSTGRES_USER=<myuser>
+POSTGRES_PASSWORD=<mypassword>
+POSTGRES_DB=<mydatabase>
+DATABASE_URL=postgresql://<myuser>:<mypassword>@db:5432/<mydatabase>

@@ -1,9 +1,9 @@
 from sqlalchemy import Column, String, Float
 from db.config import Base
 
-# Modelo SQLAlchemy que representa a tabela `RackData` no banco de dados PostgreSQL
+# Modelo SQLAlchemy que representa a tabela `StandLivros` no banco de dados PostgreSQL
 class Book_Model(Base):
-    __tablename__ = 'RackData'
+    __tablename__ = 'StandLivros'
 
     # Definição das colunas da tabela
     book_id = Column(String, primary_key=True, index=True)

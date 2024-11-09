@@ -34,6 +34,8 @@ requirements.txt
 fastapi
 uvicorn
 sqlalchemy
+psycopg2-binary
+psycopg2
 python-dotenv
 
 docker-compose up --build
