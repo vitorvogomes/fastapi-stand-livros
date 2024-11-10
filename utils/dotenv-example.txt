@@ -9,5 +9,5 @@ DATABASE_URL=postgresql://<myuser>:<mypassword>@db:5432/<mydatabase>
 # pytest
 
 # Para PostgreSQL (quando rodando Docker)
-# export DATABASE_URL="postgresql://vitorvogomes:portgres1507@db:5432/mydatabase"
+# export DATABASE_URL="postgresql://<myuser>:<mypassword>@db:5432/<mydatabase>"
 # docker-compose up
