@@ -98,17 +98,19 @@ class Book_List(BookBaseService):
             books = self._get_book_list(db, titulo, autor, categoria)
             # Se nenhum livro for encontrado, lançar erro indicando qual filtro falhou
             if not books:
-                not_found_params = []
-                if titulo:
-                    not_found_params.append("título")
-                if autor:
-                    not_found_params.append("autor")
-                if categoria:
-                    not_found_params.append("categoria")
+                if any([titulo, autor, categoria]):  # Verifica se há parâmetros fornecidos
+                    not_found_params = []
+                    if titulo:
+                        not_found_params.append("título")
+                    if autor:
+                        not_found_params.append("autor")
+                    if categoria:
+                        not_found_params.append("categoria")
 
-                # Criando uma mensagem personalizada de erro
-                param_message = ", ".join(not_found_params)
-                raise ValueError(f"(service) Nenhum livro encontrado com o(s) parâmetro(s): {param_message}.")
+                    # Criando uma mensagem personalizada de erro
+                    param_message = ", ".join(not_found_params)
+                    raise ValueError(f"(service) Nenhum livro encontrado com o(s) parâmetro(s): {param_message}.")
+                return []
             return [data.json() for data in books]
         except Exception as error:
             raise ValueError(f"{error}")

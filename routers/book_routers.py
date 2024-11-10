@@ -58,11 +58,6 @@ async def get_books(
 ):
     try:
         book_list = book_list_service.get(db, titulo=titulo, autor=autor, categoria=categoria)
-        if not book_list:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Nenhum livro cadastrado na StandLivros"
-            )
         return {"success": "Livros disponiveis na StandLivros", "data": book_list}
     except ValueError as error:
         # Captura a exceção com mensagem detalhada

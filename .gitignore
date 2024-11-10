@@ -1,6 +1,8 @@
 .venv
 .env
-books.py
+.pytest_cache
+test.db
+.coverage
 
 .vscode
 __pycache__
