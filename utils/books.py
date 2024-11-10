@@ -1,3 +1,5 @@
+# Exemplo de estrutura do json da entidade Livros
+
 books = [
     {
         "titulo": "Os Segredos da Mente Milionária",

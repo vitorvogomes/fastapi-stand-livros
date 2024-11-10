@@ -17,9 +17,12 @@ book_update_or_create_service = Book_Update_or_Create()
 book_router = APIRouter()
 
 # Rota raiz da aplicação que retorna uma mensagem de boas-vindas
-@book_router.get("/")
+@book_router.get("/",
+    description="Retorna uma mensagem de boas vindas",
+    summary="Raíz do projeto"
+)
 async def root():
-    return {"message": "Welcome to Rack for Books"}
+    return {"message": "Welcome to StandLivros"}
 
 # Endpoint para obter a lista de livros disponíveis
 @book_router.get(

@@ -62,7 +62,17 @@ def test_get_books_all_filters(test_many_db):
     assert book[0]["titulo"] == "Livro 1"
     logger.info("Teste concluído com sucesso: Todos os filtros aplicados corretamente.")
 
+# Teste para ValueError, filtro não encontrado
+def test_get_books_not_found(test_many_db):
+    with patch.object(Book_List, "get", side_effect=ValueError("Erro inesperado")):
+        response = client.get("/books", params={"titulo": "Inexistente"})
+        logger.debug(f"Resposta da API: {response.json()}")
 
+        assert response.status_code == 404
+        assert "Não localizado:" in response.json()["detail"]
+        logger.info("Teste concluído com sucesso: Erro de valor não encontrado acionado.")
+
+# Teste mensagem de erro para exceções
 def test_get_books_exception(test_many_db):
     with patch.object(Book_List, "get", side_effect=Exception("Erro inesperado")):
         response = client.get("/books")
