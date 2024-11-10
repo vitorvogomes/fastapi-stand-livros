@@ -50,4 +50,8 @@ docker-compose up --build
 O código deve ser disponibilizado em um repositório Git (GitHub, GitLab, etc.).
 Forneça instruções claras sobre como executar a API e os testes, incluindo as dependências e configurações necessárias.
 
+Documentação
+/docs
+/redoc
+
 -->

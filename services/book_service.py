@@ -49,7 +49,7 @@ class BookBaseService:
             # Verifica se o livro já existe no banco de dados
             check = self._check_if_book_exists(db, data["titulo"], data["categoria"])
             if check:
-                raise ValueError(f"(service) O livro {data['titulo']} já existe no banco de dados.")
+                raise ValueError(f"(service) O livro {data['titulo']} já existe.")
             
             # Se o livro não existir, adiciona no banco de dados
             book = self.model(
