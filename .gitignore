@@ -3,6 +3,7 @@
 .pytest_cache
 test.db
 .coverage
+pytest.md
 
 .vscode
 __pycache__
