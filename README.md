@@ -83,7 +83,6 @@ python3 -m pytest --cov=routers --cov-report=term-missing
 
 - Alternativas para rodar os testes
 ```sh
-coverage run -m pytest tests/
 coverage report -m
 
 ```

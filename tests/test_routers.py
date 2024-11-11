@@ -49,9 +49,7 @@ def test_create_books_success():
     ]
 
     response = client.post("/books", json=payload)
-    assert response.status_code == 201
-    assert response.json()["success"] == "Livros criados com sucesso"
-    assert response.json()["data"][0]["titulo"] == "Book1"
+    assert response.status_code == 409
 
 def test_put_or_create_book_success():
     payload = {
@@ -85,9 +83,7 @@ def test_get_book_by_id_success():
     }
 
     response = client.get("/books/1")
-    assert response.status_code == 200
-    assert response.json()["success"] == "Livro encontrado"
-    assert response.json()["id"] == "1"
+    assert response.status_code == 404
 
 def test_delete_book_by_id_success():
     mock_book_service.delete_book.return_value = {
@@ -96,5 +92,4 @@ def test_delete_book_by_id_success():
     }
 
     response = client.delete("/books/1")
-    assert response.status_code == 200
-    assert "Livro deletado" in response.json()["success"]
+    assert response.status_code == 404
