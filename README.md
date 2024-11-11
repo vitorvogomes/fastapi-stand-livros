@@ -67,15 +67,21 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 git clone https://https://github.com/vitorvogomes/fastapi-stand-livros.git
 ```
 
+#### Instalar PostgresSQL localmente antes de iniciar o ambiente virtual
+- Criar ambiente virtual
+```sh
+brew install postgresql
+```
+
 #### Configurar o ambiente virtual do python
 - Criar ambiente virtual
 ```sh
-python -m venv nomevenv
+python3 -m venv .venv
 ```
 
 - Inicializar o ambiente virtual
 ```sh
-source nomevenv/bin/activate
+source .venv/bin/activate
 ```
 
 - Atualizar ferramentas pip
@@ -87,7 +93,33 @@ pip install --upgrade pip
 ```sh
 pip install -r requirements.txt
 ```
-  
+
+#### Para Rodar localmente e Realizar testes com Pytest
+###### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
+- Modificar DATABASE_URL durante o pytest
+```sh
+DATABASE_URL=sqlite:///./test.db
+```
+- Setar variáveis de ambiente
+```sh
+source .env.pytest
+grep DATABASE_URL .env
+```
+
+- Rodar pytest
+- Rodar o testes e mapear a cobertura em uma determinada rota
+```sh
+python3 -m pytest --cov=routers --cov-report=term-missing
+
+```
+
+- Alternativas para rodar os testes
+```sh
+coverage run -m pytest tests/
+covarage report -m
+
+```
+
 #### Docker Compose para incializar os Containers
 ###### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
 - Modificar DATABASE_URL para 'db' durante no container 
@@ -123,26 +155,6 @@ docker-compose down
 ```sh
 docker-compose up
 ```
-
-#### Para Rodar localmente e Realizar testes com Pytest
-###### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
-- Modificar DATABASE_URL durante o pytest
-```sh
-DATABASE_URL=sqlite:///./test.db
-```
-- Setar variáveis de ambiente
-```sh
-source .env.pytest
-grep DATABASE_URL .env
-```
-
-- Rodar pytest
-- Rodar o testes e mapear a cobertura em uma determinada rota
-```sh
-pytest --cov=routers --cov-report=term-missing
-
-```
-
 
 
 #### Versões utilizadas no projeto
