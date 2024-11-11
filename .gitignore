@@ -4,6 +4,7 @@
 test.db
 .coverage
 pytest.md
+versions.txt
 
 .vscode
 __pycache__
