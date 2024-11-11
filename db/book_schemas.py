@@ -8,7 +8,7 @@ class BookModel(BaseModel):
     categoria: str
     valor: float
 
-    class ConfigDict:
+    class Config:
         from_attributes = True
         json_schema_extra = {
             "example": {

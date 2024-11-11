@@ -58,12 +58,6 @@ async def get_books(
     try:
         book_list = book_service.list_books(db, titulo=titulo, autor=autor, categoria=categoria)
         return {"success": "Livros disponiveis na StandLivros", "data": book_list}
-    except ValueError as error:
-        # Captura a exceção com mensagem detalhada
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Não localizado: {error}" # Retorna a mensagem específica do erro (informando qual parâmetro falhou)
-        )
     except Exception as error:
         # Captura erros gerais e retorna uma resposta 500 (erro interno)
         raise HTTPException (
@@ -102,14 +96,10 @@ async def get_books(
 )
 async def create_book(books: List[BookModel], db: Session = Depends(get_db)):
     try:
-        payload = [data.model_dump() for data in books]
-        new_books = book_service.create_book(db, payload)
-        return {"success": "Novos livros criados com sucesso", "data": new_books}
-    except ValueError as error:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Conflito: {error}"
-        )
+        created_books = book_service.create_book(db, [book.dict() for book in books])
+        return {"success": "Livros criados com sucesso", "data": created_books}
+    except HTTPException as error:
+        raise error
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -139,6 +129,8 @@ async def put_or_create_book(book: BookModel, db: Session = Depends(get_db)):
     try:
         updated_book = book_service.update_book(db, book.model_dump())
         return {"success": "Livro criado ou atualizado com sucesso", "data": [updated_book]}
+    except HTTPException as error:
+        raise error
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -177,11 +169,8 @@ async def get_book_by_id(book_id: str, db: Session = Depends(get_db)):
     try:
         book = book_service.get_book(db, book_id)
         return {"success": "Livro encontrado", "data": [book]}
-    except Exception as error:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Não localizado: {error}"
-        )
+    except HTTPException as error:
+        raise error
     except Exception as error:
         # Captura erros gerais e retorna uma resposta 500 (erro interno)
         raise HTTPException(
@@ -221,11 +210,8 @@ async def delete_book_by_id(book_id: str, db: Session = Depends(get_db)):
     try:
         book_service.delete_book(db, book_id)
         return {"success": "Livro deletado", "data": []}
-    except Exception as error:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Não localizado: {error}"
-        )
+    except HTTPException as error:
+        raise error
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
