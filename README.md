@@ -119,6 +119,7 @@ docker-compose down
 
 - Up: Para inicializar os containers
 ```sh
+coverage run -m pytest test/
 docker-compose up
 ```
 
