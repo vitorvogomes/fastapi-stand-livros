@@ -63,6 +63,11 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 
 ##### Inicialização do ambiente virtual e download das dependências do projeto
 
+- Para clonar um repositório do GitHub, use o comando git clone seguido da URL do repositório
+```sh
+git clone https://https://github.com/vitorvogomes/fastapi-stand-livros.git
+```
+
 - Criar ambiente virtual
 ```sh
 $python -m venv <nomevenv>
