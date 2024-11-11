@@ -130,9 +130,13 @@ class BookService:
             db.delete(book)
             db.commit()
             return {"success": "Livro deletado com sucesso", "data": []}
+        except HTTPException:
+            # Re-raise HTTPExceptions to ensure specific HTTP status codes
+            raise
         except Exception as error:
             db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Erro ao deletar livro: {str(error)}"
             )
+

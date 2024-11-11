@@ -2,8 +2,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from db.config import Base
-from db.book_models import Book_Model
-from services.book_service import BookService, handle_exceptions
+from services.book_service import BookService
+from fastapi import HTTPException
 
 # Configuração do banco de dados SQLite em memória para os testes
 engine = create_engine("sqlite:///:memory:", echo=True)  # Para ver os logs do SQL executado
@@ -24,61 +24,85 @@ def book_service():
     return BookService()
 
 
-def test_create_book(db: Session, book_service: BookService):
-    data = {
-        "book_id": "123",
-        "book_title": "Test Book",
-        "book_author": "Test Author",
-        "book_category": "Test Category",
-        "book_price": 19.99
-    }
+def test_create_book_success(db: Session, book_service: BookService):
+    data = [
+        {
+            "titulo": "Test Book",
+            "autor": "Test Author",
+            "categoria": "Test Category",
+            "valor": 19.99
+        }
+    ]
     result = book_service.create_book(db, data)
-    assert result["titulo"] == "Test Book"
-    assert result["valor"] == 19.99
+    assert len(result) == 1
+    assert result[0]["titulo"] == "Test Book"
+    assert result[0]["valor"] == 19.99
 
 
-def test_get_book(db: Session, book_service: BookService):
-    data = {
-        "book_id": "123",
-        "book_title": "Test Book",
-        "book_author": "Test Author",
-        "book_category": "Test Category", 
-        "book_price": 19.99
-    }
+def test_create_book_conflict(db: Session, book_service: BookService):
+    data = [
+        {
+            "titulo": "Test Book",
+            "autor": "Test Author",
+            "categoria": "Test Category",
+            "valor": 19.99
+        }
+    ]
     book_service.create_book(db, data)
-    result = book_service.get_book(db, "123")
-    assert result["id"] == "123"
+    
+    with pytest.raises(HTTPException) as excinfo:
+        book_service.create_book(db, data)
+    
+    assert excinfo.value.status_code == 409
+    assert "Conflito" in excinfo.value.detail
 
-def test_list_books(db: Session, book_service: BookService):
-    data1 = {"book_id": "1", "book_title": "Book 1", "book_author": "Author A", "book_category": "Fiction", "book_price": 19.99}
-    data2 = {"book_id": "2", "book_title": "Book 2", "book_author": "Author B", "book_category": "Non-fiction", "book_price": 19.99}
 
-    book_service.create_book(db, data1)
-    book_service.create_book(db, data2)
 
+def test_list_books_with_filters(db: Session, book_service: BookService):
+    data1 = {"titulo": "Book A", "autor": "Author A", "categoria": "Fiction", "valor": 19.99}
+    data2 = {"titulo": "Book B", "autor": "Author B", "categoria": "Non-fiction", "valor": 29.99}
+
+    book_service.create_book(db, [data1, data2])
+    
+    result = book_service.list_books(db, titulo="Book A")
+    assert len(result) == 1
+    assert result[0]["titulo"] == "Book A"
+
+
+def test_list_books_empty(db: Session, book_service: BookService):
     result = book_service.list_books(db)
-    assert len(result) == 2
+    assert result == []
 
-def test_update_book(db: Session, book_service: BookService):
-    data = {"book_id": "1", "book_title": "Old Title", "book_author": "Author", "book_category": "Fiction", "book_price": 19.99}
-    book_service.create_book(db, data)
 
-    updated_data = {"book_title": "New Title"}
-    result = book_service.update_book(db, "1", updated_data)
-    assert result["titulo"] == "New Title"
+def test_update_existing_book(db: Session, book_service: BookService):
+    data = {"titulo": "Book Title", "autor": "Author", "categoria": "Category", "valor": 19.99}
+    book = book_service.create_book(db, [data])[0]
 
-def test_delete_book(db: Session, book_service: BookService):
-    data = {"book_id": "1", "book_title": "Book to delete", "book_author": "Author", "book_category": "Fiction", "book_price": 19.99}
-    book_service.create_book(db, data)
+    update_data = {"id": book["id"], "titulo": "Updated Title"}
+    result = book_service.update_book(db, update_data)
 
-    result = book_service.delete_book(db, "1")
-    assert result["id"] == "1"
+    assert result["titulo"] == "Updated Title"
 
-def test_handle_exceptions():
-    @handle_exceptions
-    def raise_exception():
-        raise ValueError("Test Error")
 
-    with pytest.raises(Exception) as excinfo:
-        raise_exception()
-    assert "Test Error" in str(excinfo.value)
+def test_update_create_new_book(db: Session, book_service: BookService):
+    update_data = {"id": "non-existent-id", "titulo": "New Book", "autor": "Author", "categoria": "Category", "valor": 15.99}
+    result = book_service.update_book(db, update_data)
+
+    assert result["titulo"] == "New Book"
+    assert result["valor"] == 15.99
+
+
+def test_delete_existing_book(db: Session, book_service: BookService):
+    data = {"titulo": "Book Title", "autor": "Author", "categoria": "Category", "valor": 19.99}
+    book = book_service.create_book(db, [data])[0]
+
+    result = book_service.delete_book(db, book["id"])
+    assert result["success"] == "Livro deletado com sucesso"
+
+
+def test_delete_non_existent_book(db: Session, book_service: BookService):
+    with pytest.raises(HTTPException) as excinfo:
+        book_service.delete_book(db, "non-existent-id")
+    
+    assert excinfo.value.status_code == 404
+    assert "Nenhum livro encontrado" in excinfo.value.detail
