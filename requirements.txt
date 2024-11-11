@@ -4,7 +4,7 @@ psycopg2
 psycopg2-binary
 pytest
 pytest-cov
-python-dotenv0
+python-dotenv
 requests
 SQLAlchemy
 uvicorn
