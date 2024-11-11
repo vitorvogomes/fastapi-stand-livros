@@ -30,8 +30,7 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 3. [PostgreSQL]
 4. [SQLAlchemy]
 5. [Pytest]
-6. [Tokens JWT]
-7. [Docker]
+6. [Docker]
 
 
 ## Endpoints da API 
@@ -53,11 +52,6 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 - Após rodar a aplicação no VS Code a documentação e testes podem ser feitos no link:
   
 [http://localhost:8000/docs]
-
-#### POSTMAN COLLECTION
-- Segue link disponível para testes da API através do Postman
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com)
 
 
 ##### Inicialização do ambiente virtual e download das dependências do projeto
@@ -96,13 +90,14 @@ pip install -r requirements.txt
 
 #### Para Rodar localmente e Realizar testes com Pytest
 ###### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
-- Modificar DATABASE_URL durante o pytest
+- Setar variáveis de ambiente no .env DATABASE_URL como no arquivo .env.pytest para executar os testes com pytest
 ```sh
 DATABASE_URL=sqlite:///./test.db
 ```
+
 - Setar variáveis de ambiente
 ```sh
-source .env.pytest
+source .env
 grep DATABASE_URL .env
 ```
 
@@ -132,7 +127,7 @@ DATABASE_URL=postgresql://postgres:mysecret@db:5432/mydatabase
 
 - Setar variáveis de ambiente
 ```sh
-source .env.prod
+source .env
 grep DATABASE_URL .env
 ```
 
