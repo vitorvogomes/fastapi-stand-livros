@@ -83,8 +83,8 @@ python3 -m pytest --cov=routers --cov-report=term-missing
 
 - Alternativas para rodar os testes
 ```sh
+coverage run -m pytest test/
 coverage report -m
-
 ```
 
 #### Docker Compose para incializar os Containers
@@ -119,7 +119,6 @@ docker-compose down
 
 - Up: Para inicializar os containers
 ```sh
-coverage run -m pytest test/
 docker-compose up
 ```
 
