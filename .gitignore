@@ -3,12 +3,9 @@
 .pytest_cache
 test.db
 .coverage
-pytest.md
-versions.txt
 
 .vscode
 __pycache__
 *.pyc
 *.pyo
 *.pyd
-

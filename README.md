@@ -36,17 +36,17 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 
 ## Endpoints da API 
 
-###### GET "/books" --> GET BOOK LIST
+###### GET "/books" -- GET BOOK LIST
 - Forneçe uma lista das livros na StandLivros.
 - Possui parâmetros de consulta para filtrar através do título, autor, categoria.
 
-###### POST "/books" --> CREATE BOOK
+###### POST "/books" -- CREATE BOOK
 - Permite que novos livros sejam adicionados na StandLivros.
 
-###### PUT "/books/{booking_id}" --> UPDATE BOOK
+###### PUT "/books/{booking_id}" -- UPDATE BOOK
 - Permite que alguma informação sobre o título, autor, categoria e preço do livro podem ser alteradas.
 
-###### DELETE "/books/{booking_id}" --> DELETE BOOK
+###### DELETE "/books/{booking_id}" -- DELETE BOOK
 - Permite excluir um livro da StandLivros.
 
 #### OpenAPI/Swagger
@@ -57,8 +57,7 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 #### POSTMAN COLLECTION
 - Segue link disponível para testes da API através do Postman
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/23458410-b9b8524c-891a-4304-abde-2c9a1563fef7?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D23458410-b9b8524c-891a-4304-abde-2c9a1563fef7%26entityType%3Dcollection%26workspaceId%3Defb2f2ab-d95a-495f-bc2b-ef74d93aa7a9)
-
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com)
 
 
 ##### Inicialização do ambiente virtual e download das dependências do projeto
@@ -68,37 +67,78 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 git clone https://https://github.com/vitorvogomes/fastapi-stand-livros.git
 ```
 
+##### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
+- Arquivo .env
+```sh
+POSTGRES_USER=seu_usuario
+POSTGRES_PASSWORD=sua_senha
+POSTGRES_DB=seu_banco
+DATABASE_URL=postgresql://seu_usuario:sua_senha@db:5432/seu_banco
+```
+
+- Setar variáveis de ambiente
+```sh
+source .env
+```
+
+#### Configurar o ambiente virtual do python
 - Criar ambiente virtual
 ```sh
-$python -m venv <nomevenv>
+python -m venv nomevenv
 ```
 
 - Inicializar o ambiente virtual
 ```sh
-$source <nomevenv>/bin/activate
+source nomevenv/bin/activate
+```
+
+- Atualizar ferramentas pip
+```sh
+pip install --upgrade pip
 ```
 
 - Download das dependencias do projeto
 ```sh
-$pip install -r requirements.txt
-```
-
-##### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
-- Arquivo .env
-```sh
-
+pip install -r requirements.txt
 ```
   
+#### Docker Compose para incializar os Containers
 
-
-
-<!--
-
-
+- Build e Up: Para criar os containers
+```sh
 docker-compose up --build
+```
+
+- Logs
+```sh
+docker-compose logs
+```
+
+- Rebuild e Restart nos containers
+```sh
 docker-compose down
+```
+
+- Up: Para inicializar os containers
+```sh
+docker-compose up
+```
+
+#### Para Rodar localmente e Realizar testes com Pytest
+
+- Rodar pytest
+- Rodar o testes e mapear a cobertura em uma determinada rota
+```sh
+pytest --cov=routers --cov-report=term-missing
+
+```
 
 
-cobertura de testes
 
--->
+#### Versões utilizadas no projeto
+
+Ubuntu 24.04.1 LTS
+Python 3.12.3
+Docker 27.3.1
+Docker Compose version v2.30.3
+PostgreSQL 16.4 (Ubuntu 16.4-0ubuntu0.24.04.2)
