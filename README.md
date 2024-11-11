@@ -95,7 +95,7 @@ pip install -r requirements.txt
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=mysecret
 POSTGRES_DB=mydatabase
-DATABASE_URL=postgresql+psycopg2://postgres:mysecret@db:5432/mydatabase
+DATABASE_URL=postgresql://postgres:mysecret@db:5432/mydatabase
 ```
 
 - Setar variáveis de ambiente
@@ -131,7 +131,7 @@ docker-compose up
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=mysecret
 POSTGRES_DB=mydatabase
-DATABASE_URL=postgresql+psycopg2://postgres:mysecret@localhost:5432/mydatabase
+DATABASE_URL=postgresql://postgres:mysecret@localhost:5432/mydatabase
 ```
 - Setar variáveis de ambiente
 ```sh
