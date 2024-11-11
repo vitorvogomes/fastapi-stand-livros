@@ -100,7 +100,7 @@ DATABASE_URL=postgresql://postgres:mysecret@db:5432/mydatabase
 
 - Setar variáveis de ambiente
 ```sh
-source .env
+source .env.prod
 grep DATABASE_URL .env
 ```
 
@@ -126,16 +126,13 @@ docker-compose up
 
 #### Para Rodar localmente e Realizar testes com Pytest
 ###### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
-- Modificar DATABASE_URL para 'localhost' durante os testes
+- Modificar DATABASE_URL durante o pytest
 ```sh
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=mysecret
-POSTGRES_DB=mydatabase
-DATABASE_URL=postgresql://postgres:mysecret@localhost:5432/mydatabase
+DATABASE_URL=sqlite:///./test.db
 ```
 - Setar variáveis de ambiente
 ```sh
-source .env
+source .env.pytest
 grep DATABASE_URL .env
 ```
 

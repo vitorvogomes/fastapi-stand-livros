@@ -1,17 +1,13 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
-from services.book_service import Book_List, Book_By_Id, Book_Delete, Book_Create, Book_Update_or_Create
+from services.book_service import BookService
 from db.book_schemas import BookModel, BookListResponse, ErrorResponse
 from typing import List, Optional
 from db.config import get_db
 
 # Instância dos serviços responsáveis por gerenciar os livros
-book_list_service = Book_List()
-book_by_id_service = Book_By_Id()
-book_delete_service = Book_Delete()
-book_create_service = Book_Create()
-book_update_or_create_service = Book_Update_or_Create()
+book_service = BookService()
 
 # Roteador principal para gerenciar endpoints relacionados aos livros
 book_router = APIRouter()
@@ -60,7 +56,7 @@ async def get_books(
     categoria: Optional[str] = None
 ):
     try:
-        book_list = book_list_service.get(db, titulo=titulo, autor=autor, categoria=categoria)
+        book_list = book_service.list_books(db, titulo=titulo, autor=autor, categoria=categoria)
         return {"success": "Livros disponiveis na StandLivros", "data": book_list}
     except ValueError as error:
         # Captura a exceção com mensagem detalhada
@@ -106,8 +102,8 @@ async def get_books(
 )
 async def create_book(books: List[BookModel], db: Session = Depends(get_db)):
     try:
-        payload = [data.dict() for data in books]
-        new_books = book_create_service.post(db, payload)
+        payload = [data.model_dump() for data in books]
+        new_books = book_service.create_book(db, payload)
         return {"success": "Novos livros criados com sucesso", "data": new_books}
     except ValueError as error:
         raise HTTPException(
@@ -141,7 +137,7 @@ async def create_book(books: List[BookModel], db: Session = Depends(get_db)):
 )
 async def put_or_create_book(book: BookModel, db: Session = Depends(get_db)):
     try:
-        updated_book = book_update_or_create_service.put(db, book.dict())
+        updated_book = book_service.update_book(db, book.model_dump())
         return {"success": "Livro criado ou atualizado com sucesso", "data": [updated_book]}
     except Exception as error:
         raise HTTPException(
@@ -179,7 +175,7 @@ async def put_or_create_book(book: BookModel, db: Session = Depends(get_db)):
 )
 async def get_book_by_id(book_id: str, db: Session = Depends(get_db)):
     try:
-        book = book_by_id_service.get(db, book_id)
+        book = book_service.get_book(db, book_id)
         return {"success": "Livro encontrado", "data": [book]}
     except Exception as error:
         raise HTTPException(
@@ -223,7 +219,7 @@ async def get_book_by_id(book_id: str, db: Session = Depends(get_db)):
 )
 async def delete_book_by_id(book_id: str, db: Session = Depends(get_db)):
     try:
-        book_delete_service.delete(db, book_id)
+        book_service.delete_book(db, book_id)
         return {"success": "Livro deletado", "data": []}
     except Exception as error:
         raise HTTPException(

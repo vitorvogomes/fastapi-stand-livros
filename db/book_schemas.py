@@ -8,9 +8,9 @@ class BookModel(BaseModel):
     categoria: str
     valor: float
 
-    class Config:
-        orm_mode = True
-        schema_extra = {
+    class ConfigDict:
+        from_attributes = True
+        json_schema_extra = {
             "example": {
                 "titulo": "O Senhor dos Anéis",
                 "autor": "J.R.R. Tolkien",
