@@ -67,20 +67,6 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 git clone https://https://github.com/vitorvogomes/fastapi-stand-livros.git
 ```
 
-##### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
-- Arquivo .env
-```sh
-POSTGRES_USER=seu_usuario
-POSTGRES_PASSWORD=sua_senha
-POSTGRES_DB=seu_banco
-DATABASE_URL=postgresql://seu_usuario:sua_senha@db:5432/seu_banco
-```
-
-- Setar variáveis de ambiente
-```sh
-source .env
-```
-
 #### Configurar o ambiente virtual do python
 - Criar ambiente virtual
 ```sh
@@ -103,6 +89,20 @@ pip install -r requirements.txt
 ```
   
 #### Docker Compose para incializar os Containers
+###### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
+- Modificar DATABASE_URL para 'db' durante no container 
+```sh
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=mysecret
+POSTGRES_DB=mydatabase
+DATABASE_URL=postgresql+psycopg2://postgres:mysecret@db:5432/mydatabase
+```
+
+- Setar variáveis de ambiente
+```sh
+source .env
+grep DATABASE_URL .env
+```
 
 - Build e Up: Para criar os containers
 ```sh
@@ -125,6 +125,19 @@ docker-compose up
 ```
 
 #### Para Rodar localmente e Realizar testes com Pytest
+###### Configurar as variáveis de ambiente para acessar o banco de dados PostgreSQL
+- Modificar DATABASE_URL para 'localhost' durante os testes
+```sh
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=mysecret
+POSTGRES_DB=mydatabase
+DATABASE_URL=postgresql+psycopg2://postgres:mysecret@localhost:5432/mydatabase
+```
+- Setar variáveis de ambiente
+```sh
+source .env
+grep DATABASE_URL .env
+```
 
 - Rodar pytest
 - Rodar o testes e mapear a cobertura em uma determinada rota

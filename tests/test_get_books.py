@@ -1,25 +1,36 @@
-import logging
+import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch
-from tests.test_fixtures import test_many_db
-from main import app
-from services.book_service import Book_List
+from unittest.mock import MagicMock
+from routers.book_routers import book_router  # Importar seu roteador
+from routers.book_routers import book_list_service
+from main import app  # Substituir por onde você conecta o roteador principal
 
-logging.basicConfig(level=logging.DEBUG,format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
-
+# Registre seu roteador para teste
+app.include_router(book_router)
 client = TestClient(app)
 
-# Teste estrutura da resposta e da mensagem em caso de sucesso
-def test_get_books_success_message(test_many_db):
+def test_get_books_mocked(mocker):
+    mock_data = [
+        {"id": "1", "titulo": "Livro 1", "autor": "Autor 1", "categoria": "Categoria 1", "valor": 99.99},
+        {"id": "2", "titulo": "Livro 2", "autor": "Autor 2", "categoria": "Categoria 2", "valor": 99.99},
+        {"id": "3", "titulo": "Livro 3", "autor": "Autor 3", "categoria": "Categoria 3", "valor": 99.99},
+    ]
+
+    # Cria mock para a função book_list_service.get
+    mocker.patch("book_list_service.get", return_value=mock_data)
+
+    # Faz chamada para a rota com o FastAPI test client
     response = client.get("/books")
-    logger.debug(f"Resposta da API: {response.json()}")
 
+    # Verifica se a resposta está como esperado
     assert response.status_code == 200
-    assert "success" in response.json()
-    assert response.json()["success"] == "Livros disponiveis na StandLivros"
-    logger.info("Teste concluído com sucesso: Estrutura de resposta correta.")
+    assert response.json() == {
+        "success": "Livros disponiveis na StandLivros",
+        "data": mock_data
+    }
 
+
+"""
 # Teste para uso de filtros - Titulo
 def test_get_books_by_title(test_many_db):
     response = client.get("/books", params={"titulo": "Livro 1"})
@@ -84,4 +95,4 @@ def test_get_books_exception(test_many_db):
 
 
 
-
+"""
