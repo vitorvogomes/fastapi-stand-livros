@@ -32,8 +32,7 @@ Esses itens não são obrigatórios, mas serão considerados como bônus e podem
 5. [Pytest]
 6. [Docker]
 
-
-##### Inicialização do ambiente virtual e download das dependências do projeto
+#### Inicialização do ambiente virtual e download das dependências do projeto
 
 - Para clonar um repositório do GitHub, use o comando git clone seguido da URL do repositório
 ```sh
@@ -71,7 +70,13 @@ DATABASE_URL=sqlite:///./test.db
 - Carregar variáveis de ambiente
 ```sh
 source .env
+```
+
+- Confirmação da variável DATABASE_URL
+```sh
 grep DATABASE_URL .env
+ou
+echo ${DATABASE_URL}
 ```
 
 ###### Rodar os teste com pytest
@@ -83,17 +88,17 @@ python3 -m pytest tests/test_services.py
 
 - Testes com cobertura de código para uma rota específica
 ```sh
-python3 -m pytest --cov=routers --cov-report=term-missing
+python3 -m pytest --cov=services --cov-report=term-missing
 
 ```
 
-- Testes e gerar 'cobertura' para todo o projeto
+- Testes e gerar cobertura para todo o projeto
 ```sh
 python3 -m pytest --cov=. --cov-report=term-missing
 
 ```
 
-- Alternativa usando coverage diretamente
+- Alternativa usando 'coverage' diretamente
 ```sh
 coverage run -m pytest tests/
 ```
@@ -138,8 +143,7 @@ docker-compose down
 docker-compose up
 ```
 
-
-##### Configurar as variáveis de ambiente para acessar
+#### Configurar as variáveis de ambiente para acessar
 ###### PRODUÇÃO - CONTAINER DOCKER - ARQUIVO (.env)
 - Renomear o arquivo para rodar
 ```sh
@@ -155,9 +159,7 @@ DATABASE_URL=postgresql+psycopg2://postgres:mysecret@db:5432/mydatabase
 DATABASE_URL=sqlite:///./test.db
 ```
 
-
-
-## Endpoints da API 
+### Endpoints da API 
 
 ###### GET "/books" -- GET BOOK LIST
 - Forneçe uma lista das livros na StandLivros.
@@ -175,10 +177,9 @@ DATABASE_URL=sqlite:///./test.db
 #### OpenAPI/Swagger
 - Após rodar a aplicação no VS Code a documentação e testes podem ser feitos no link:
   
-[http://localhost:8000/docs]
+##### Link Documentação API StandLivros <http://localhost:8000/docs>
 
-
-#### Versões utilizadas no projeto
+### Versões utilizadas no projeto
 
 - Ubuntu 24.04.1 LTS
 - Python 3.12.3
