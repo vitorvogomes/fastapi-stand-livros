@@ -74,16 +74,32 @@ source .env
 grep DATABASE_URL .env
 ```
 
-- Rodar pytest
-- Rodar o testes e mapear a cobertura em uma determinada rota
+###### Rodar os teste com pytest
+- Testes com arquivos específicos
+```sh
+python3 -m pytest tests/test_services.py
+
+```
+
+- Testes com cobertura de código para uma rota específica
 ```sh
 python3 -m pytest --cov=routers --cov-report=term-missing
 
 ```
 
-- Alternativas para rodar os testes
+- Testes e gerar 'cobertura' para todo o projeto
+```sh
+python3 -m pytest --cov=. --cov-report=term-missing
+
+```
+
+- Alternativa usando coverage diretamente
 ```sh
 coverage run -m pytest test/
+```
+
+- Gerar relatório da cobertura no terminal
+```sh
 coverage report -m
 ```
 

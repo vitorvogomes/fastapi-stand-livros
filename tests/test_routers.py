@@ -8,7 +8,7 @@ from main import app
 # Mock do serviço BookService
 mock_book_service = MagicMock()
 
-# Mock do get_db
+# Mock da sessão do banco de dados
 @pytest.fixture
 def mock_get_db():
     mock_session = MagicMock(spec=Session)
@@ -17,6 +17,7 @@ def mock_get_db():
 # Configurando o TestClient
 client = TestClient(app)
 
+# Substitui dependências reais por mocks durante os testes
 @pytest.fixture(autouse=True)
 def setup_dependencies():
     with patch("services.book_service.BookService", return_value=mock_book_service):

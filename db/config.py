@@ -12,6 +12,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///:memory:")  # SQLite em mem�
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# Classe base para passar ao modelo de teabelas SQLAlchemy
 Base = declarative_base()
 
 # Função para obter uma sessão do banco de dados

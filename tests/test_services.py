@@ -6,19 +6,19 @@ from services.book_service import BookService
 from fastapi import HTTPException
 
 # Configuração do banco de dados SQLite em memória para os testes
-engine = create_engine("sqlite:///:memory:", echo=True)  # Para ver os logs do SQL executado
+engine = create_engine("sqlite:///:memory:", echo=True)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Fixture para criar o banco de dados e as tabelas antes dos testes
 @pytest.fixture(scope="function")
 def db():
-    # Cria as tabelas no banco de dados antes de rodar os testes
     Base.metadata.create_all(bind=engine)  # Cria as tabelas a partir do Base
     db = TestingSessionLocal()  # Cria a sessão para interagir com o banco
     yield db  # Executa o teste
     db.close()  # Fecha a sessão
     Base.metadata.drop_all(bind=engine)  # Remove as tabelas após os testes
 
+# Instancia o serviço 'BookService' que será testado
 @pytest.fixture
 def book_service():
     return BookService()

@@ -2,7 +2,6 @@ import uuid
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from db.book_models import Book_Model
-from db.book_schemas import BookModel, BookResponse
 from fastapi import HTTPException, status
 
 class BookService:
@@ -72,6 +71,7 @@ class BookService:
                 detail=str(error)
             )
         except Exception as error:
+            # Reverte qualquer mudança não confirmada no banco de dados
             db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -111,6 +111,7 @@ class BookService:
                 db.commit()
                 return new_book.json()
         except Exception as error:
+            # Reverte qualquer mudança não confirmada no banco de dados
             db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -128,12 +129,13 @@ class BookService:
                 )
             
             db.delete(book)
-            db.commit()
+            db.commit() # Grava as mudanças, se tudo correr bem
             return {"success": "Livro deletado com sucesso", "data": []}
         except HTTPException:
-            # Re-raise HTTPExceptions to ensure specific HTTP status codes
+            # Repassa a exceção para manter o comportamento esperado
             raise
         except Exception as error:
+            # Reverte qualquer mudança não confirmada no banco de dados
             db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

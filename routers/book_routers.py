@@ -96,7 +96,7 @@ async def get_books(
 )
 async def create_book(books: List[BookModel], db: Session = Depends(get_db)):
     try:
-        created_books = book_service.create_book(db, [book.dict() for book in books])
+        created_books = book_service.create_book(db, [book.model_dump() for book in books])
         return {"success": "Livros criados com sucesso", "data": created_books}
     except HTTPException as error:
         raise error
