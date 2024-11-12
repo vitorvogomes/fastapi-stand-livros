@@ -95,7 +95,7 @@ python3 -m pytest --cov=. --cov-report=term-missing
 
 - Alternativa usando coverage diretamente
 ```sh
-coverage run -m pytest test/
+coverage run -m pytest tests/
 ```
 
 - Gerar relatório da cobertura no terminal
